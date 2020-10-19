@@ -1,53 +1,76 @@
 <template>
   <section class="section">
-    <div class="columns is-mobile">
-      <card
-        title="Free"
-        icon="github"
-      >
-        Open source on <a href="https://github.com/buefy/buefy">
-          GitHub
-        </a>
-      </card>
+      <div class="columns is-desktop is-vcentered">
+        <div>
+          <b-field label="Username">
+              <b-input v-model="username" maxlength="30"></b-input>
+          </b-field>
 
-      <card
-        title="Responsive"
-        icon="cellphone-link"
-      >
-        <b class="has-text-grey">
-          Every
-        </b> component is responsive
-      </card>
+          <b-field label="Password">
+              <b-input v-model="password" type="password" maxlength="30"></b-input>
+          </b-field>
 
-      <card
-        title="Modern"
-        icon="alert-decagram"
-      >
-        Built with <a href="https://vuejs.org/">
-          Vue.js
-        </a> and <a href="http://bulma.io/">
-          Bulma
-        </a>
-      </card>
-
-      <card
-        title="Lightweight"
-        icon="arrange-bring-to-front"
-      >
-        No other internal dependency
-      </card>
-    </div>
+          <b-button type="is-primary" @click="login">Login</b-button>
+        </div>
+      </div>
   </section>
 </template>
 
 <script>
-import Card from '~/components/Card'
+import gql from "graphql-tag";
 
 export default {
   name: 'HomePage',
+  
+  data() {
+    return {
+      username: "",
+      password: ""
+    }
+  },
+  methods: {
+    async login() {
+      const credentials = {
+        identifier: this.username,
+        password: this.password
+      };
+      try {
+        const { data: { login: { user, jwt } } } = await this.$apollo.mutate({
+          mutation: gql`
+            mutation($identifier: String!, $password: String!) {
+              login(input: { identifier: $identifier, password: $password }) {
+                user {
+                  id
+                  username
+                  email
+                  role {
+                    name
+                    type
+                    description
+                  }
+                }
+                jwt
+              }
+            }
+          `,
+          variables: credentials
+        })
+        //set the jwt to the this.$apolloHelpers.onLogin
+        await this.$apolloHelpers.onLogin(jwt)
+        console.log(jwt)
+      } 
+      
+      catch (e) {
+        console.log(credentials)
+        console.error(e)
+      }
 
-  components: {
-    Card
+      this.$router.push('/dashboard')
+    }
+  },
+  async mounted(){
+    //clear apollo-token from cookies to make sure user is fully logged out
+    await this.$apolloHelpers.onLogout() 
   }
 }
 </script>
