@@ -1,19 +1,23 @@
 <template>
-  <section class="section">
-      <div class="columns is-desktop is-vcentered">
-        <div>
-          <b-field label="Username">
-              <b-input v-model="username" maxlength="30"></b-input>
-          </b-field>
+  <div class="container is-fullhd" style="display:flex; align-items:center; justify-content:center; height:100vh; background-color:#7957D5;">
+    <div>
+      <div class="box">
+        <h4 class="title">Sign-in</h4>
+        <b-field label="Username">
+            <b-input v-model="username" maxlength="30"></b-input>
+        </b-field>
 
-          <b-field label="Password">
-              <b-input v-model="password" type="password" maxlength="30"></b-input>
-          </b-field>
+        <b-field label="Password">
+            <b-input v-model="password" type="password" maxlength="30"></b-input>
+        </b-field>
 
-          <b-button type="is-primary" @click="login">Login</b-button>
-        </div>
+        <b-button type="is-primary" @click="login">Login</b-button>
       </div>
-  </section>
+      <div style="text-align:center;">
+        <nuxt-link style="color:white;" to="/">Doesn't have an account? Create one here</nuxt-link>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

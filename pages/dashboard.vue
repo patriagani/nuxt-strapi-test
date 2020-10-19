@@ -1,19 +1,20 @@
 <template>
-  <section class="section">
-        <h2>Hi, {{user.username}}</h2>
-        <br>
-        <h4><strong>Account information</strong></h4>
-        <br>
-        <h5>Username: {{user.username}}</h5>
-        <br>
-        <h5>E-mail: {{user.email}}</h5>
-        <br>
-        <br>
-        <h4><strong>Company information</strong></h4>
-        <br>
-        <h5 v-if="user.company">Company: {{user.company.name}}</h5>
-        
-  </section>
+  <div class="container is-fullhd" style="display:flex; align-items:center; height:100vh; background-color:#7957D5;">
+    <div style="color:white;">
+      <h2>Hi, {{user.username}}</h2>
+      <br>
+      <h4>Account information</h4>
+      <br>
+      <h5>Username: {{user.username}}</h5>
+      <br>
+      <h5>E-mail: {{user.email}}</h5>
+      <br>
+      <br>
+      <h4>Company information</h4>
+      <br>
+      <h5 v-if="user.company">Company: {{user.company.name}}</h5>
+    </div>
+  </div>
 </template>
 
 <script>
